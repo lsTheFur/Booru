@@ -4,6 +4,7 @@
 		"outDir": "dist",
 		"declaration": true,
 		"declarationMap": true,
-		"sourceMap": true
+		"sourceMap": true,
+		"lib": ["ES2015","ES2016"]
 	}
 }

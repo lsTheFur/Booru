@@ -2,3 +2,4 @@ test.js
 node_modules
 src
 .parcel-cache
+_tmp

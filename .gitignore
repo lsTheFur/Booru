@@ -1,4 +1,4 @@
 dist
 node_modules
-test.ts
 .parcel-cache
+_tmp
