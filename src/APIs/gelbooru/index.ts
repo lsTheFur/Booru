@@ -1,5 +1,5 @@
 import axios from 'axios';
-import BaseAPI from '../baseAPI';
+import BaseAPI, { BaseRTPost } from '../baseAPI';
 import { Post } from '../ReturnValues';
 interface APIPost {
   // Directory (OLD API)
@@ -27,34 +27,7 @@ interface APIPost {
   // Rating
   rating?: 'safe' | 'questionable' | 'explicit';
 }
-class ReturnedPost implements Post {
-  // ID
-  id: number;
-  // file_url
-  URL: string;
-  // rating
-  Rating: 'explicit' | 'questionable' | 'safe';
-  // score
-  Score: number;
-  // source
-  Source?: string;
-  // image
-  fileName: string;
-  // tags
-  Tags: string;
-  // raw API return
-  Raw = {};
-  ///// METHODS
-  async Download() {
-    if (!this.URL)
-      throw new Error('No URL returned from API. Cannot Download.');
-    return (
-      await axios({
-        url: this.URL,
-        responseType: 'arraybuffer',
-      })
-    ).data;
-  }
+class ReturnedPost extends BaseRTPost implements Post {
   static fromAPIPost(post: APIPost, gelAPI?: GelbooruAPI) {
     const rtpost = new ReturnedPost();
     rtpost.id = post.id;

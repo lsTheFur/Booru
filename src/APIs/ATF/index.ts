@@ -1,6 +1,6 @@
 import axios from 'axios';
 import SHA1 from '../../SHA1';
-import BaseAPI from '../baseAPI';
+import BaseAPI, { BaseRTPost } from '../baseAPI';
 import { Post } from '../ReturnValues';
 const ratings: Record<'s' | 'q' | 'e', 'safe' | 'questionable' | 'explicit'> = {
   s: 'safe',
@@ -51,34 +51,7 @@ interface APIPost {
   approver_id: number | null;
   file_ext: string;
 }
-class ReturnedPost implements Post {
-  // ID
-  id: number;
-  // file_url
-  URL: string;
-  // rating
-  Rating: 'explicit' | 'questionable' | 'safe';
-  // score
-  Score: number;
-  // source
-  Source?: string;
-  // image
-  fileName: string;
-  // tags
-  Tags: string;
-  // raw API return
-  Raw = {};
-  ///// METHODS
-  async Download() {
-    if (!this.URL)
-      throw new Error('No URL returned from API. Cannot Download.');
-    return (
-      await axios({
-        url: this.URL,
-        responseType: 'arraybuffer',
-      })
-    ).data;
-  }
+class ReturnedPost extends BaseRTPost implements Post {
   static fromAPIPost(post: APIPost) {
     const rtpost = new ReturnedPost();
     rtpost.id = post.id;

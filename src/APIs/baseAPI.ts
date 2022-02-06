@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { Post } from './ReturnValues';
 
 export interface BaseAPI extends Record<any, any> {
@@ -6,6 +7,35 @@ export interface BaseAPI extends Record<any, any> {
     | any;
   Posts: (tags: string, pages: number) => Promise<Post[]>;
   Post: (id: number) => Promise<Post>;
+}
+export class BaseRTPost implements Post {
+  // ID
+  id: number;
+  // file_url
+  URL: string;
+  // rating
+  Rating: 'explicit' | 'questionable' | 'safe';
+  // score
+  Score: number;
+  // source
+  Source?: string;
+  // image
+  fileName: string;
+  // tags
+  Tags: string;
+  // raw API return
+  Raw = {};
+  ///// METHODS
+  async Download() {
+    if (!this.URL)
+      throw new Error('No URL returned from API. Cannot Download.');
+    return (
+      await axios({
+        url: this.URL,
+        responseType: 'arraybuffer',
+      })
+    ).data;
+  }
 }
 export default class BaseAPIClass implements BaseAPI {
   BaseURL: string;
