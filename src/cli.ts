@@ -70,6 +70,10 @@ import { resolve } from 'path';
 Usage:`);
     return yrgs.showHelp('error');
   }
+  if (booru === ';')
+    return console.error(
+      'did you just replace my semicolons (;) with FUCKING GREEK QUESTION MARKS (;) AGAIN? >:(',
+    );
   booru = booru.toLowerCase();
   // @ts-ignore
   const { pages }: number = await args;
