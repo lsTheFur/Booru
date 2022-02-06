@@ -1,4 +1,5 @@
-import Booru, { BooruMappings, Post } from '.';
+import Booru, { Post } from '.';
+import BooruMappings from './Mappings';
 
 // Get all possible boorus
 const boorus: Booru[] = [];

@@ -5,7 +5,22 @@ import GelbooruAPI from './Adapters/gelbooru';
 import MoebooruAPI from './Adapters/moebooru';
 import MyImoutoAPI from './Adapters/myimouto';
 import { Post as _Post } from './Adapters/ReturnValues';
+import { Mappings } from './Mappings';
+/**
+ * @alias require('boorujs/Mappings').Mappings
+ * @alias import BooruMappings from 'boorujs/Mappings';
+ * @notice Might be deprecated in 1.0.0
+ */
+export const BooruMappings = Mappings;
+/**
+ * @name Post
+ * @description An API/Adapter/Booru-independent Post. Adapters convert post-related API calls to this.
+ */
 export type Post = _Post;
+/**
+ * @name mappedBoorus
+ * @description A list of boorus with built-in mappings. For other boorus, you will need to provide a BooruInput.
+ */
 export type mappedBoorus =
   | 'gelbooru'
   | 'rule34'
@@ -26,65 +41,30 @@ export type mappedBoorus =
 
 // Support for Derpibooru might be added some time | Danbooru will be supported once i can be bothered
 // For Shimmie2 support, upvote issues like https://github.com/shish/shimmie2/issues/788 | I'm not parsing a dynamic HTML site any time soon, I CBA.
+/**
+ * @name BooruTypes
+ * @description List of built-in booru types.
+ */
 export type BooruTypes = 'gelbooru' | 'myimouto' | 'moebooru' | 'atf' | 'e621';
-interface BooruInput {
+/**
+ * @name BooruInput
+ * @description Describes required information about a given booru
+ */
+export interface BooruInput {
+  /**
+   * @name BooruType
+   * @description What type of booru software does said URL run? (i.e. gelbooru)
+   * @type {BooruTypes} Booru Type
+   */
   BooruType: BooruTypes;
-  BooruURL: string;
+  /**
+   * @name BooruURL
+   * @description The booru's URL. Non-https:// URLs are strongly discouraged. Trailing /s aren't supported.
+   */
+  BooruURL: `https://${string}`;
 }
-export const BooruMappings: Record<mappedBoorus, BooruInput> = {
-  // Booru List provided generously by several of my friends
-  gelbooru: {
-    BooruType: 'gelbooru',
-    BooruURL: 'https://gelbooru.com',
-  },
-  // down at the time of commenting
-  // hypnohub: {
-  //   BooruType: 'myimouto',
-  //   BooruURL: 'https://hypnohub.net',
-  // },
-  atf: {
-    BooruType: 'atf',
-    BooruURL: 'https://booru.allthefallen.moe',
-  },
-  lolibooru: {
-    BooruType: 'myimouto',
-    BooruURL: 'https://lolibooru.moe',
-  },
-  e621: {
-    BooruType: 'e621',
-    BooruURL: 'https://e621.net',
-  },
-  rule34: {
-    BooruType: 'gelbooru',
-    BooruURL: 'https://api.rule34.xxx',
-  },
-  konachan: {
-    BooruType: 'moebooru',
-    BooruURL: 'https://konachan.com',
-  },
-  realbooru: {
-    BooruType: 'gelbooru',
-    BooruURL: 'https://realbooru.com',
-  },
-  safebooru: {
-    BooruType: 'gelbooru',
-    BooruURL: 'https://safebooru.org',
-  },
-  thebigimageboard: {
-    BooruType: 'gelbooru',
-    BooruURL: 'https://tbib.org',
-  },
-  tbib: {
-    BooruType: 'gelbooru',
-    BooruURL: 'https://tbib.org',
-  },
-  yandere: {
-    BooruType: 'moebooru',
-    BooruURL: 'https://yande.re',
-  },
-};
 export const MappedBooruNames = [];
-for (const booruName in BooruMappings) {
+for (const booruName in Mappings) {
   MappedBooruNames.push(booruName);
 }
 const APIClasses: Record<BooruTypes, typeof BaseAPIClass> = {

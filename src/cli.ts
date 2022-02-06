@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import * as fs from 'fs'; // Load fs
-import BooruJS, { BooruMappings, MappedBooruNames, Post } from '.'; // Load BooruJS
+import BooruJS, { MappedBooruNames, Post } from '.'; // Load BooruJS
+import BooruMappings from './Mappings';
 import * as yargs from 'yargs';
 import { resolve } from 'path';
 
