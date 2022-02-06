@@ -1,5 +1,5 @@
 import Booru, { BooruMappings } from '.';
-import { Post } from './APIs/ReturnValues';
+import { Post } from './Adapters/ReturnValues';
 
 // Get all possible boorus
 const boorus: Booru[] = [];

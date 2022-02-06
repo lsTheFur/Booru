@@ -1,10 +1,10 @@
-import ATFAPI from './APIs/ATF';
-import BaseAPIClass from './APIs/baseAPI';
-import E6API from './APIs/E621';
-import GelbooruAPI from './APIs/gelbooru';
-import MoebooruAPI from './APIs/moebooru';
-import MyImoutoAPI from './APIs/myimouto';
-import { Post } from './APIs/ReturnValues';
+import ATFAPI from './Adapters/ATF';
+import BaseAPIClass from './Adapters/baseAPI';
+import E6API from './Adapters/E621';
+import GelbooruAPI from './Adapters/gelbooru';
+import MoebooruAPI from './Adapters/moebooru';
+import MyImoutoAPI from './Adapters/myimouto';
+import { Post } from './Adapters/ReturnValues';
 export type mappedBoorus =
   | 'gelbooru'
   | 'rule34'
@@ -23,7 +23,8 @@ export type mappedBoorus =
   | 'realbooru'
   | 'e621';
 
-// Support for Shimmie2 & Derpibooru might be added some time | Danbooru will be supported once i can be bothered
+// Support for Derpibooru might be added some time | Danbooru will be supported once i can be bothered
+// For Shimmie2 support, upvote issues like https://github.com/shish/shimmie2/issues/788 | I'm not parsing a dynamic HTML site any time soon, I CBA.
 export type BooruTypes = 'gelbooru' | 'myimouto' | 'moebooru' | 'atf' | 'e621';
 interface BooruInput {
   BooruType: BooruTypes;
