@@ -1,5 +1,9 @@
-import Booru, { Post } from '.';
+import * as path from 'path';
+import * as fs from 'fs';
+import Booru, { BooruTypes, Post } from '.';
 import BooruMappings from './Mappings';
+
+console.log('/// Starting Test ///');
 
 // Get all possible boorus
 const boorus: Booru[] = [];
@@ -73,4 +77,48 @@ for (const BooruName in BooruMappings) {
         booru.Data.BooruURL,
     );
   }
+  // Download Test
+  let booruTypes: BooruTypes[] = [];
+  for (const booruPos in boorus) {
+    const booru = boorus[booruPos];
+    if (!booruTypes.includes(booru.Data.BooruType)) {
+      booruTypes.push(booru.Data.BooruType);
+      console.log(
+        'Trying to download image for ' +
+          booru.Data.BooruType +
+          ' > ' +
+          booru.Data.BooruURL,
+      );
+      const posts = await booru.Posts('rating:safe', 1);
+      if (!posts[0])
+        throw new Error(
+          'cannot find post for booru ' +
+            booru.Data.BooruType +
+            ' > ' +
+            booru.Data.BooruURL +
+            ' for rating safe',
+        );
+      let i = 0;
+      const v = async () => {
+        let post = posts[i];
+        if (!post.URL) {
+          i++;
+          return await v();
+        }
+        await post.Download();
+        const file = path.resolve('__test_image.' + post.fileName);
+        await post.DownloadToFile(file);
+        fs.rmSync(file);
+        console.log(
+          'Success for downloading from ' +
+            booru.Data.BooruType +
+            ' > ' +
+            booru.Data.BooruURL,
+        );
+      };
+      await v();
+    }
+  }
+
+  console.log('/// Test Completed ///');
 })();

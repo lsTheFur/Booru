@@ -9,3 +9,4 @@ _tmp
 /test
 # Test Files
 test.js
+__test_image*

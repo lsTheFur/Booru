@@ -100,17 +100,7 @@ export default class BaseAdapterClass implements BaseAdapter {
     return Posts;
   }
   async Post(id: number) {
-    const post: Post = {
-      Rating: 'explicit',
-      id: 0,
-      Tags: '',
-      URL: '',
-      fileName: '',
-      Download: async () => {
-        return Buffer.from('');
-      },
-      Raw: {},
-    };
+    const post: Post = new BaseRTPost();
     return post;
   }
 }

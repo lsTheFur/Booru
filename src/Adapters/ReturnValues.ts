@@ -21,6 +21,15 @@ export interface Post extends Record<string, any> {
    */
   Download: () => Promise<Buffer>;
   /**
+   * @name DownloadToFile
+   * @description Downloads the file at Post.URL to file `file`.
+   *
+   * @param {string} path The to download the file to.
+   *
+   * @returns {Promise<void>}
+   */
+  DownloadToFile(path: string): Promise<void>;
+  /**
    * @name Source
    * @description Source(s) of the post
    */
