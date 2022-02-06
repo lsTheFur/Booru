@@ -2,47 +2,13 @@ import axios from 'axios';
 import SHA1 from '../../SHA1';
 import BaseAPI, { BaseRTPost } from '../baseAPI';
 import { Post } from '../ReturnValues';
+import { APIPost as BaseAPIPost } from '../myimouto'; // Has an identical APIPost
 const ratings: Record<'s' | 'q' | 'e', 'safe' | 'questionable' | 'explicit'> = {
   s: 'safe',
   q: 'questionable',
   e: 'explicit',
 };
-export interface APIPost {
-  // ID
-  id: number;
-  // MD5
-  md5: string;
-  // Image Data
-  file_url: string;
-  width: number;
-  height: number;
-  // JPEG Image
-  jpeg_url: string;
-  jpeg_width: number;
-  jpeg_height: number;
-  jpeg_file_size: number;
-  // Tags
-  tags: string;
-  // Preview Data
-  preview_url: string;
-  preview_height: number;
-  preview_width: number;
-  // Source
-  source?: string;
-  // Score
-  score?: string;
-  // Rating
-  rating?: 's' | 'q' | 'e';
-  // Other meta
-  created_at: number;
-  creator_id: number;
-  file_size: number;
-  status: 'active' | string;
-  parent_id: number | null;
-  author: string;
-  frames: string[];
-  frames_string: number[];
-}
+export interface APIPost extends BaseAPIPost {}
 class ReturnedPost extends BaseRTPost implements Post {
   static fromAPIPost(post: APIPost) {
     const rtpost = new ReturnedPost();
