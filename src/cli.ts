@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 import * as fs from 'fs'; // Load fs
-import BooruJS, { BooruMappings, MappedBooruNames } from '.'; // Load BooruJS
+import BooruJS, { BooruMappings, MappedBooruNames, Post } from '.'; // Load BooruJS
 import * as yargs from 'yargs';
 import { resolve } from 'path';
-import { Post } from './Adapters/ReturnValues';
 
 (async () => {
   const yrgs = yargs // Load args

@@ -4,7 +4,8 @@ import E6API from './Adapters/E621';
 import GelbooruAPI from './Adapters/gelbooru';
 import MoebooruAPI from './Adapters/moebooru';
 import MyImoutoAPI from './Adapters/myimouto';
-import { Post } from './Adapters/ReturnValues';
+import { Post as _Post } from './Adapters/ReturnValues';
+export type Post = _Post;
 export type mappedBoorus =
   | 'gelbooru'
   | 'rule34'
