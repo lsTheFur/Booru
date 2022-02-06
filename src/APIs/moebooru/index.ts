@@ -3,11 +3,7 @@ import SHA1 from '../../SHA1';
 import BaseAPI, { BaseRTPost } from '../baseAPI';
 import { Post } from '../ReturnValues';
 import { APIPost as BaseAPIPost } from '../myimouto'; // Has an identical APIPost
-const ratings: Record<'s' | 'q' | 'e', 'safe' | 'questionable' | 'explicit'> = {
-  s: 'safe',
-  q: 'questionable',
-  e: 'explicit',
-};
+import ratings from '../Ratings';
 export interface APIPost extends BaseAPIPost {}
 class ReturnedPost extends BaseRTPost implements Post {
   static fromAPIPost(post: APIPost) {

@@ -4,6 +4,7 @@ import BaseAPI, { BaseRTPost } from '../baseAPI';
 import { Post } from '../ReturnValues';
 import * as fs from 'fs';
 import * as path from 'path';
+import ratings from '../Ratings';
 const x = JSON.parse(
   fs.readFileSync(
     path.resolve(__filename, '..', '..', '..', '..', 'package.json'),
@@ -11,11 +12,6 @@ const x = JSON.parse(
   ),
 );
 const wait = (a: number) => new Promise(r => setTimeout(r, a));
-const ratings: Record<'s' | 'q' | 'e', 'safe' | 'questionable' | 'explicit'> = {
-  s: 'safe',
-  q: 'questionable',
-  e: 'explicit',
-};
 export interface APIPost {
   // ID
   id: number;

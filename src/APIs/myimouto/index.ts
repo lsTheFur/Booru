@@ -2,11 +2,7 @@ import axios from 'axios';
 import SHA1 from '../../SHA1';
 import BaseAPI, { BaseRTPost } from '../baseAPI';
 import { Post } from '../ReturnValues';
-const ratings: Record<'s' | 'q' | 'e', 'safe' | 'questionable' | 'explicit'> = {
-  s: 'safe',
-  q: 'questionable',
-  e: 'explicit',
-};
+import ratings from '../Ratings';
 export interface APIPost {
   // ID
   id: number;
