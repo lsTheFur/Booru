@@ -67,7 +67,12 @@ export const MappedBooruNames = [];
 for (const booruName in Mappings) {
   MappedBooruNames.push(booruName);
 }
-const APIClasses: Record<BooruTypes, typeof BaseAPIClass> = {
+/**
+ * @name Adapters
+ * @description List of adapters.
+ * @info You **can** add your own adapters, and then use them in BooruInputs, however it's strongly suggested to make a PR instead, and contribute to BooruJS
+ */
+export let Adapters: Record<BooruTypes, typeof BaseAPIClass> = {
   gelbooru: GelbooruAPI,
   moebooru: MoebooruAPI,
   myimouto: MyImoutoAPI,
@@ -101,7 +106,7 @@ export class Booru {
    */
   constructor(booru: BooruConstructorInput, Key?: string, UserID?: string) {
     this.Data = BooruMappings[booru.toString()] ?? booru;
-    this.API = new APIClasses[this.Data.BooruType](
+    this.API = new Adapters[this.Data.BooruType](
       this.Data.BooruURL,
       Key,
       UserID,
