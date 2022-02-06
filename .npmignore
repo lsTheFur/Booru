@@ -1,5 +1,11 @@
-test.js
-node_modules
+# Source Files
 src
+# Node Modules
+node_modules
+# Old
 .parcel-cache
+# Temporary & Test Files
 _tmp
+/test
+# Test Files
+test.js
