@@ -124,7 +124,6 @@ class ReturnedPost implements Post {
 export default class E6API extends BaseAPI {
   constructor(BaseURL: string, LOGIN?: string, API_KEY?: string) {
     super(BaseURL, LOGIN, API_KEY);
-    this.BaseURL = BaseURL;
     if (LOGIN && API_KEY) {
       this.GlobalApiUrlArgs += `&login=${LOGIN}&api_key=${API_KEY}`;
     }

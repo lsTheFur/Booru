@@ -88,7 +88,6 @@ class ReturnedPost implements Post {
 export default class MoebooruAPI extends BaseAPI {
   constructor(BaseURL: string, LOGIN?: string, PSWD_HASH?: string) {
     super(BaseURL, LOGIN, PSWD_HASH);
-    this.BaseURL = BaseURL;
     if (LOGIN && PSWD_HASH) {
       this.GlobalApiUrlArgs += `&login=${LOGIN}&password_hash=${SHA1(
         PSWD_HASH,

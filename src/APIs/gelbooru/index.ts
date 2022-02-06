@@ -74,7 +74,6 @@ class ReturnedPost implements Post {
 export default class GelbooruAPI extends BaseAPI {
   constructor(BaseURL: string, API?: string, USER?: string) {
     super(BaseURL, API, USER);
-    this.BaseURL = BaseURL;
     if (API && USER) {
       this.GlobalApiUrlArgs += `&api_key=${API}&user_id=${USER}`;
     }
