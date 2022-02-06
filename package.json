@@ -24,7 +24,7 @@
     "url": "https://github.com/lsTheFur/Booru"
   },
   "scripts": {
-    "test": "npm build && node dist/test.js",
+    "test": "npm run-script build && node dist/test.js",
     "build": "rimraf dist && tsc"
   },
   "bin": "dist/cli.js",
