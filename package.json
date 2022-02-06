@@ -25,7 +25,8 @@
   },
   "scripts": {
     "test": "npm run-script build && node dist/test.js",
-    "build": "rimraf dist && tsc"
+    "build": "rimraf dist && tsc",
+    "prepublish": "npm run-script test"
   },
   "bin": "dist/_cli.js",
   "engines": {
