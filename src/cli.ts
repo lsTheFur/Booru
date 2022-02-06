@@ -103,6 +103,8 @@ Usage:`);
      *
      * @param post Post
      * @returns {Promise<void>} Resolves on finish or error. Errors are outputted using console.error
+     *
+     * @internal @private
      */
     const download = (post: Post): Promise<void> =>
       new Promise(async res => {
