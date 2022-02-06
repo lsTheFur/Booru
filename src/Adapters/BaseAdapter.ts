@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { writeFileSync } from 'fs';
+import * as node_path from 'path';
 import { Post } from './ReturnValues';
 
 export interface BaseAdapter extends Record<any, any> {
@@ -8,25 +10,60 @@ export interface BaseAdapter extends Record<any, any> {
   Posts: (tags: string, pages: number) => Promise<Post[]>;
   Post: (id: number) => Promise<Post>;
 }
+/**
+ * @name BaseReturnedPost
+ * @description The base class for a returned post.
+ */
 export class BaseRTPost implements Post {
-  // ID
+  /**
+   * @name id
+   * @description The post's ID
+   */
   id: number;
-  // file_url
+  /**
+   * @name URL
+   * @description The post's file's URL
+   */
   URL: string;
-  // rating
+  /**
+   * @name Rating
+   * @description How "family-friendly" it is
+   */
   Rating: 'explicit' | 'questionable' | 'safe';
-  // score
+  /**
+   * @name Score
+   * @description The user-rating for the post
+   */
   Score: number;
-  // source
-  Source?: string;
-  // image
+  /**
+   * @name Source
+   * @description Source(s) of the post
+   */
+  Source?: string | string[];
+  /**
+   * @name fileName
+   * @description The file's name, as returned by the API.
+   * If none is returned, everything following the last / in the URL is used
+   */
   fileName: string;
-  // tags
+  /**
+   * @name Tags
+   * @description A space-seperated list of tags
+   */
   Tags: string;
-  // raw API return
+  /**
+   * @name Raw
+   * @description The raw API Response
+   */
   Raw = {};
   ///// METHODS
-  async Download() {
+  /**
+   * @name Download
+   * @description Downloads the file at Post.URL into memory. Resolves with the response.
+   *
+   * @returns {Promise<Buffer>} Raw File Data
+   */
+  async Download(): Promise<Buffer> {
     if (!this.URL)
       throw new Error('No URL returned from API. Cannot Download.');
     return (
@@ -35,6 +72,17 @@ export class BaseRTPost implements Post {
         responseType: 'arraybuffer',
       })
     ).data;
+  }
+  /**
+   * @name DownloadToFile
+   * @description Downloads the file at Post.URL to file `file`.
+   *
+   * @param {string} path The to download the file to.
+   *
+   * @returns {Promise<void>}
+   */
+  async DownloadToFile(path: string): Promise<void> {
+    writeFileSync(node_path.resolve(path), await this.Download());
   }
 }
 export default class BaseAdapterClass implements BaseAdapter {

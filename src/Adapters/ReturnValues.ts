@@ -22,9 +22,9 @@ export interface Post extends Record<string, any> {
   Download: () => Promise<Buffer>;
   /**
    * @name Source
-   * @description Source of the post
+   * @description Source(s) of the post
    */
-  Source?: string;
+  Source?: string | string[];
   /**
    * @name Score
    * @description Post's score
