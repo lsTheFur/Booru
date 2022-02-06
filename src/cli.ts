@@ -6,7 +6,7 @@ import { resolve } from 'path';
 import { Post } from './APIs/ReturnValues';
 
 (async () => {
-  const args = yargs // Load args
+  const yrgs = yargs // Load args
     .scriptName('boorujs')
     .usage('$0 [args]')
     .option('booru', {
@@ -53,12 +53,24 @@ import { Post } from './APIs/ReturnValues';
       describe: `Write BooruJS API Output`,
       type: 'boolean',
     })
-    .demandOption(['booru'], 'Please provide a booru to use.')
-    .help().argv;
+    .option('src', {
+      describe: `Get Github Repository link`,
+      type: 'boolean',
+    })
+    .alias('v', 'version')
+    .alias('h', 'help')
+    .help();
+  const args = yrgs.argv;
   // @ts-ignore
   let { booru, dir, tags }: Record<string, string> = await args;
   // @ts-ignore
-  let { multi, log, dry, json }: Record<string, boolean> = await args;
+  let { multi, log, dry, json, src }: Record<string, boolean> = await args;
+  if (src) return console.log('https://github.com/lsTheFur/Booru');
+  if (!booru) {
+    console.error(`Missing Argument '--booru'
+Usage:`);
+    return yrgs.showHelp('error');
+  }
   booru = booru.toLowerCase();
   // @ts-ignore
   const { pages }: number = await args;
@@ -101,7 +113,7 @@ import { Post } from './APIs/ReturnValues';
               filePath,
               await post.Download(), // Returns a buffer containing the post
             );
-          else if (dry) await post.Download();
+          else if (dry) await post.Download(); // Download but dont write
         } catch (error) {
           if (!dry)
             fs.writeFileSync(
