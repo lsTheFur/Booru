@@ -108,7 +108,7 @@ for (const BooruName in BooruMappings) {
         await post.Download();
         const file = path.resolve('__test_image.' + post.fileName);
         await post.DownloadToFile(file);
-        fs.rmSync(file);
+        fs.unlinkSync(file);
         console.log(
           'Success for downloading from ' +
             booru.Data.BooruType +
@@ -121,4 +121,8 @@ for (const BooruName in BooruMappings) {
   }
 
   console.log('/// Test Completed ///');
-})();
+})().catch(v => {
+  console.error('/// An error has ocurred ///');
+  console.error(v);
+  process.exit(1);
+});
