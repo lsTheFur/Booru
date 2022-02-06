@@ -44,6 +44,8 @@ class ReturnedPost implements Post {
   Raw = {};
   ///// METHODS
   async Download() {
+    if (!this.URL)
+      throw new Error('No URL returned from API. Cannot Download.');
     return (
       await axios({
         url: this.URL,
@@ -61,6 +63,7 @@ class ReturnedPost implements Post {
     rtpost.fileName = post.image;
     rtpost.Tags = post.tags;
     rtpost.Raw = post;
+    if (rtpost.URL === 'null') rtpost.URL = null;
     return rtpost;
   }
 }

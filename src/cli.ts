@@ -3,6 +3,7 @@ import * as fs from 'fs'; // Load fs
 import BooruJS, { BooruMappings, MappedBooruNames } from '.'; // Load BooruJS
 import * as yargs from 'yargs';
 import { resolve } from 'path';
+import { Post } from './APIs/ReturnValues';
 
 (async () => {
   const args = yargs // Load args
@@ -33,10 +34,20 @@ import { resolve } from 'path';
       default: '',
       type: 'string',
     })
+    .option('multi', {
+      alias: ['m'],
+      describe: 'Download multiple at once',
+      type: 'boolean',
+    })
+    .option('log', {
+      alias: ['l'],
+      describe: 'Log files being downloaded',
+      type: 'boolean',
+    })
     .demandOption(['booru'], 'Please provide a booru to use.')
     .help().argv;
   // @ts-ignore
-  let { booru, dir, tags }: Record<string, string> = await args;
+  let { booru, dir, tags, multi, log }: Record<string, string> = await args;
   booru = booru.toLowerCase();
   // @ts-ignore
   const { pages }: number = await args;
@@ -58,23 +69,59 @@ import { resolve } from 'path';
     return;
   }
   if (BooruMappings[booru]) {
-    const Booru = new BooruJS(BooruMappings[booru]); // Create a Booru Instance (Using booru as an argument would work, ts is just a bitch)
-    Booru.Posts(tags ?? '', pages ?? 1).then(
-      (
-        postList, // gets all posts with the tag astolfo
-      ) =>
-        postList.forEach(async post => {
-          console.log(post.URL);
-          try {
+    const download = (post: Post) =>
+      new Promise(async res => {
+        if (log) console.log('Downloading ' + post.URL);
+        const filePath = resolve(
+          dir ?? process.cwd(),
+          post.id + '-' + post.fileName,
+        );
+        if (!post.URL) return console.warn('Post ' + post.id + ' has no URL');
+        try {
+          if (!fs.existsSync(filePath))
             // for each post
             fs.writeFileSync(
-              resolve(dir ?? process.cwd(), post.id + '-' + post.fileName),
+              filePath,
               await post.Download(), // Returns a buffer containing the post
             ); // download posts
-          } catch (error) {
-            console.error(error);
-          }
-        }),
+        } catch (error) {
+          fs.writeFileSync(
+            resolve(
+              dir ?? process.cwd(),
+              'error.' + post.id + '-' + post.fileName + '.log',
+            ),
+            `Error for ${post.URL}:
+POST:
+${JSON.stringify(post, null, 2)}
+ERROR:
+${JSON.stringify(error, null, 2)}`,
+          );
+          console.error(
+            'An error ocurred for ' +
+              post.id +
+              '-' +
+              post.fileName +
+              ' - See ' +
+              resolve(
+                dir ?? process.cwd(),
+                'error.' + post.id + '-' + post.fileName + '.log',
+              ),
+          );
+        }
+        res(void 0);
+      });
+    const Booru = new BooruJS(BooruMappings[booru]); // Create a Booru Instance (Using booru as an argument would work, ts is just a bitch)
+    Booru.Posts(tags ?? '', pages ?? 1).then(
+      multi
+        ? postList => postList.forEach(download)
+        : async postList => {
+            for (const k in postList) {
+              if (Object.prototype.hasOwnProperty.call(postList, k)) {
+                const post = postList[k];
+                await download(post);
+              }
+            }
+          },
     );
   } else {
     throw new Error('Booru not found ' + booru);
