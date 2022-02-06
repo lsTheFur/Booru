@@ -1,5 +1,9 @@
+# Distribution Files
 dist
+# Node Modules
 node_modules
+# Old
 .parcel-cache
+# Temporary & Test Files
 _tmp
 /test
