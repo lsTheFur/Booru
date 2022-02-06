@@ -27,7 +27,7 @@
     "test": "npm run-script build && node dist/test.js",
     "build": "rimraf dist && tsc"
   },
-  "bin": "dist/cli.js",
+  "bin": "dist/_cli.js",
   "engines": {
     "node": ">=10"
   },

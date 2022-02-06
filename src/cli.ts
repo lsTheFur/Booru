@@ -1,11 +1,10 @@
-#!/usr/bin/env node
 import * as fs from 'fs'; // Load fs
 import BooruJS, { MappedBooruNames, Post } from '.'; // Load BooruJS
 import BooruMappings from './Mappings';
 import * as yargs from 'yargs';
 import { resolve } from 'path';
 
-(async () => {
+export default async () => {
   const yrgs = yargs // Load args
     .scriptName('boorujs')
     .usage('$0 [args]')
@@ -175,4 +174,4 @@ ${JSON.stringify(error, null, 2)}`,
   } else {
     console.error('Booru `%s` not found', booru);
   }
-})();
+};
