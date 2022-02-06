@@ -92,7 +92,19 @@ Usage:`);
     return;
   }
   if (BooruMappings[booru]) {
-    const download = (post: Post) =>
+    /**
+     * @name download
+     * @description Download post `post`
+     *
+     * @see dir — directory to write to
+     * @see process.cwd() — fallback for dir
+     * @see Post.Download() — method to get file
+     * @see console.error() — Error output
+     *
+     * @param post Post
+     * @returns {Promise<void>} Resolves on finish or error. Errors are outputted using console.error
+     */
+    const download = (post: Post): Promise<void> =>
       new Promise(async res => {
         if (log) console.log('Downloading ' + post.URL);
         const filePath = resolve(
@@ -155,6 +167,6 @@ ${JSON.stringify(error, null, 2)}`,
           },
     );
   } else {
-    throw new Error('Booru not found ' + booru);
+    console.error('Booru `%s` not found', booru);
   }
 })();

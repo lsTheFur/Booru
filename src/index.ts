@@ -4,6 +4,7 @@ import E6API from './APIs/E621';
 import GelbooruAPI from './APIs/gelbooru';
 import MoebooruAPI from './APIs/moebooru';
 import MyImoutoAPI from './APIs/myimouto';
+import { Post } from './APIs/ReturnValues';
 export type mappedBoorus =
   | 'gelbooru'
   | 'rule34'
@@ -91,11 +92,32 @@ const APIClasses: Record<BooruTypes, typeof BaseAPIClass> = {
   atf: ATFAPI,
   e621: E6API,
 };
+type BooruConstructorInput = BooruInput | mappedBoorus;
+/**
+ * @name Booru
+ * @description A BooruJS Instance
+ *
+ * @param {BooruConstructorInput} booru Which booru to use? (Mapped Booru | Booru Information Table)
+ * @param {string?} Key API Key
+ * @param {string?} UserID User ID / Username (depends on API)
+ *
+ * @class
+ */
 export class Booru {
   Data: BooruInput;
   API: BaseAPIClass;
 
-  constructor(booru: BooruInput | mappedBoorus, Key?: string, UserID?: string) {
+  /**
+   * @name Booru
+   * @description A BooruJS Instance Constructor
+   *
+   * @param {BooruConstructorInput} booru Which booru to use? (Mapped Booru | Booru Information Table)
+   * @param {?string} Key API Key
+   * @param {?string} UserID User ID / Username (depends on API)
+   *
+   * @constructor
+   */
+  constructor(booru: BooruConstructorInput, Key?: string, UserID?: string) {
     this.Data = BooruMappings[booru.toString()] ?? booru;
     this.API = new APIClasses[this.Data.BooruType](
       this.Data.BooruURL,
@@ -103,24 +125,58 @@ export class Booru {
       UserID,
     );
   }
-  Posts(tags: string, pages = 1) {
+  /**
+   * @description Get posts from booru
+   * @param {string} tags Which tags to search for (nothing = front page posts)
+   * @param {number?} pages Amount of pages to fetch
+   * @returns {Promise<Post[]>} Posts
+   */
+  Posts(tags: string, pages: number = 1): Promise<Post[]> {
     return this.API.Posts(tags, pages);
   }
   /**
-   * @deprecated (Not actually deprecated, just a warning) This will error on moebooru and myimouto
+   * @deprecated (Not actually deprecated, just a warning) This will error on many booru types, usage is discouraged
    *
    * @param id Post ID
-   * @returns Post
+   * @returns {Promise<Post>} Post
    */
-  PostFromID(id: number) {
+  PostFromID(id: number): Promise<Post> {
     return this.API.Post(id);
   }
 }
 
+/**
+ * @name MultiBooru
+ * @description Combine multiple boorus into one class
+ * @experimental Hightly Experimental
+ */
 export class MultiBooru {
+  /**
+   * List of booru instances
+   */
   Boorus: Booru[];
-  constructor(boorus: BooruInput[]) {
+  /**
+   * @see Booru
+   * @param {BooruConstructorInput[]} boorus BooruConstructorInputs
+   */
+  constructor(boorus: BooruConstructorInput[]) {
     boorus.forEach(v => this.Boorus.push(new Booru(v)));
+  }
+  /**
+   * @param {string} tags Which tags to search for (nothing = front page posts)
+   * @param {number?} pagesPerBooru Amount of pages to fetch, per booru
+   * @returns {Promise<Post[]>} Posts
+   */
+  async Posts(tags: string, pagesPerBooru: number = 1): Promise<Post[]> {
+    const posts: Post[] = [];
+    for (const k in this.Boorus) {
+      if (Object.prototype.hasOwnProperty.call(this.Boorus, k)) {
+        const Booru = this.Boorus[k];
+        const v = await Booru.Posts(tags, pagesPerBooru);
+        posts.push(...v);
+      }
+    }
+    return posts;
   }
 }
 export default Booru;
