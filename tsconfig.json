@@ -1,10 +1,10 @@
 {
-	"compilerOptions": {
-		"rootDir": "src",
-		"outDir": "dist",
-		"declaration": true,
-		"declarationMap": true,
-		"sourceMap": true,
-		"lib": ["ES2015","ES2016"]
-	}
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "lib": ["ES2015", "ES2016"]
+  }
 }
