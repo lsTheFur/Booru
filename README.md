@@ -1,4 +1,4 @@
-# BooruJS
+# BooruJS [![Node.js CI](https://github.com/lsTheFur/Booru/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/lsTheFur/Booru/actions/workflows/node.js.yml)
 
 BooruJS is a NodeJS Booru Library.
 
