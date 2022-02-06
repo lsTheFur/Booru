@@ -50,7 +50,7 @@ import { Post } from './APIs/ReturnValues';
       type: 'boolean',
     })
     .option('json', {
-      describe: `Write JSON files`,
+      describe: `Write BooruJS API Output`,
       type: 'boolean',
     })
     .demandOption(['booru'], 'Please provide a booru to use.')
