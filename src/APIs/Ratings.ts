@@ -1,4 +1,4 @@
-export default const ratings: Record<
+export const ratings: Record<
   's' | 'q' | 'e' | 'safe' | 'questionable' | 'explicit',
   'safe' | 'questionable' | 'explicit'
 > = {
@@ -9,3 +9,4 @@ export default const ratings: Record<
   questionable: 'questionable',
   explicit: 'explicit',
 };
+export default ratings;
