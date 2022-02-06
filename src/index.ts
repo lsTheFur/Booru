@@ -9,7 +9,7 @@ import { Mappings } from './Mappings';
 /**
  * @alias require('boorujs/Mappings').Mappings
  * @alias import BooruMappings from 'boorujs/Mappings';
- * @notice Might be deprecated in 1.0.0
+ * @notice Importing from index.ts might be deprecated in 1.0.0
  */
 export const BooruMappings = Mappings;
 /**
