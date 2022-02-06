@@ -1,8 +1,8 @@
 import axios from 'axios';
 import BaseAPI, { BaseRTPost } from '../baseAPI';
 import { Post } from '../ReturnValues';
-interface APIPost {
-  // Directory (OLD API)
+export interface APIPost {
+  /** Directory (OLD API) */
   directory?: number;
   // ID
   id: number;

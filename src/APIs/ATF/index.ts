@@ -7,7 +7,7 @@ const ratings: Record<'s' | 'q' | 'e', 'safe' | 'questionable' | 'explicit'> = {
   q: 'questionable',
   e: 'explicit',
 };
-interface APIPost {
+export interface APIPost {
   // ID
   id: number;
   // MD5
