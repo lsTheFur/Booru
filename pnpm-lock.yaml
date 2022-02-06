@@ -3,12 +3,12 @@ lockfileVersion: 5.3
 specifiers:
   '@types/node': ^17.0.15
   '@types/yargs': ^17.0.8
-  axios: ^0.24.0
+  axios: ^0.25.0
   typescript: ^4.5.5
   yargs: ^17.3.1
 
 dependencies:
-  axios: 0.24.0
+  axios: 0.25.0
   yargs: 17.3.1
 
 devDependencies:
@@ -44,8 +44,8 @@ packages:
       color-convert: 2.0.1
     dev: false
 
-  /axios/0.24.0:
-    resolution: {integrity: sha512-Q6cWsys88HoPgAaFAVUb0WpPk0O8iTeisR9IMqy9G8AbO4NlpVknrnQS03zzF9PGAWgO3cgletO3VjV/P7VztA==}
+  /axios/0.25.0:
+    resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
       follow-redirects: 1.14.7
     transitivePeerDependencies:
