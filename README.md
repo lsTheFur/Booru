@@ -1,4 +1,4 @@
-# BooruJS [![Node.js CI](https://github.com/lsTheFur/Booru/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/lsTheFur/Booru/actions/workflows/node.js.yml) [![npm version](https://badge.fury.io/js/boorujs.svg)](https://npm.im/boorujs)
+# BooruJS [![Node.js CI](https://github.com/lsTheFur/Booru/actions/workflows/node.js.yml/badge.svg?branch=main)](https://github.com/lsTheFur/Booru/actions/workflows/node.js.yml) [![Maintainability](https://api.codeclimate.com/v1/badges/9d21026aba66eb06d304/maintainability)](https://codeclimate.com/github/lsTheFur/Booru/maintainability) [![npm version](https://badge.fury.io/js/boorujs.svg)](https://npm.im/boorujs)
 
 BooruJS is a NodeJS Booru Library.
 
