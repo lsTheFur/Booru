@@ -1,6 +1,6 @@
 import axios from 'axios';
 import SHA1 from '../../SHA1';
-import BaseAPI, { BaseRTPost } from '../baseAPI';
+import BaseAdapter, { BaseRTPost } from '../BaseAdapter';
 import { Post } from '../ReturnValues';
 import { APIPost as BaseAPIPost } from '../myimouto'; // Has an identical APIPost
 import ratings from '../Ratings';
@@ -20,7 +20,7 @@ class ReturnedPost extends BaseRTPost implements Post {
     return rtpost;
   }
 }
-export default class MoebooruAPI extends BaseAPI {
+export default class MoebooruAPI extends BaseAdapter {
   constructor(BaseURL: string, LOGIN?: string, PSWD_HASH?: string) {
     super(BaseURL, LOGIN, PSWD_HASH);
     if (LOGIN && PSWD_HASH) {

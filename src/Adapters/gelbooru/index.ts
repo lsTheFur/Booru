@@ -1,5 +1,5 @@
 import axios from 'axios';
-import BaseAPI, { BaseRTPost } from '../baseAPI';
+import BaseAdapter, { BaseRTPost } from '../BaseAdapter';
 import { Post } from '../ReturnValues';
 export interface APIPost {
   /** Directory (OLD API) */
@@ -44,7 +44,7 @@ class ReturnedPost extends BaseRTPost implements Post {
     return rtpost;
   }
 }
-export default class GelbooruAPI extends BaseAPI {
+export default class GelbooruAPI extends BaseAdapter {
   constructor(BaseURL: string, API?: string, USER?: string) {
     super(BaseURL, API, USER);
     if (API && USER) {

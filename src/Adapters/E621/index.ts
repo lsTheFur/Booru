@@ -1,6 +1,5 @@
 import axios from 'axios';
-import SHA1 from '../../SHA1';
-import BaseAPI, { BaseRTPost } from '../baseAPI';
+import BaseAdapter, { BaseRTPost } from '../BaseAdapter';
 import { Post } from '../ReturnValues';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -90,7 +89,7 @@ class ReturnedPost extends BaseRTPost implements Post {
     return rtpost;
   }
 }
-export default class E6API extends BaseAPI {
+export default class E6API extends BaseAdapter {
   constructor(BaseURL: string, LOGIN?: string, API_KEY?: string) {
     super(BaseURL, LOGIN, API_KEY);
     if (LOGIN && API_KEY) {

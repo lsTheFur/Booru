@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Post } from './ReturnValues';
 
-export interface BaseAPI extends Record<any, any> {
+export interface BaseAdapter extends Record<any, any> {
   constructor:
     | ((BaseURL: string, APIKey?: string, UserID?: string) => any)
     | any;
@@ -37,7 +37,7 @@ export class BaseRTPost implements Post {
     ).data;
   }
 }
-export default class BaseAPIClass implements BaseAPI {
+export default class BaseAdapterClass implements BaseAdapter {
   BaseURL: string;
   /**
    * @param BaseURL URL of the booru

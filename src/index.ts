@@ -1,5 +1,5 @@
 import ATFAPI from './Adapters/ATF';
-import BaseAPIClass from './Adapters/baseAPI';
+import BaseAdapter from './Adapters/BaseAdapter';
 import E6API from './Adapters/E621';
 import GelbooruAPI from './Adapters/gelbooru';
 import MoebooruAPI from './Adapters/moebooru';
@@ -72,13 +72,20 @@ for (const booruName in Mappings) {
  * @description List of adapters.
  * @info You **can** add your own adapters, and then use them in BooruInputs, however it's strongly suggested to make a PR instead, and contribute to BooruJS
  */
-export let Adapters: Record<BooruTypes, typeof BaseAPIClass> = {
+export let Adapters: Record<BooruTypes, typeof BaseAdapter> = {
   gelbooru: GelbooruAPI,
   moebooru: MoebooruAPI,
   myimouto: MyImoutoAPI,
   atf: ATFAPI,
   e621: E6API,
 };
+/**
+ * @name BooruConstructorInput
+ * @description Input to a BooruConstructor.
+ * @type {BooruInput | mappedBoorus}
+ * @see {BooruInput}
+ * @see {mappedBoorus}
+ */
 type BooruConstructorInput = BooruInput | mappedBoorus;
 /**
  * @name Booru
@@ -91,8 +98,18 @@ type BooruConstructorInput = BooruInput | mappedBoorus;
  * @class
  */
 export class Booru {
+  /**
+   * @name Data
+   * @description Basic information about the booru
+   * @internal
+   */
   Data: BooruInput;
-  API: BaseAPIClass;
+  /**
+   * @name Adapter
+   * @description The adapter the booru is using.
+   * @internal
+   */
+  Adapter: BaseAdapter;
 
   /**
    * @name Booru
@@ -106,7 +123,7 @@ export class Booru {
    */
   constructor(booru: BooruConstructorInput, Key?: string, UserID?: string) {
     this.Data = BooruMappings[booru.toString()] ?? booru;
-    this.API = new Adapters[this.Data.BooruType](
+    this.Adapter = new Adapters[this.Data.BooruType](
       this.Data.BooruURL,
       Key,
       UserID,
@@ -119,7 +136,7 @@ export class Booru {
    * @returns {Promise<Post[]>} Posts
    */
   Posts(tags: string, pages: number = 1): Promise<Post[]> {
-    return this.API.Posts(tags, pages);
+    return this.Adapter.Posts(tags, pages);
   }
   /**
    * @deprecated (Not actually deprecated, just a warning) This will error on many booru types, usage is discouraged
@@ -128,7 +145,7 @@ export class Booru {
    * @returns {Promise<Post>} Post
    */
   PostFromID(id: number): Promise<Post> {
-    return this.API.Post(id);
+    return this.Adapter.Post(id);
   }
 }
 
