@@ -31,5 +31,6 @@
   "engines": {
     "node": ">=10"
   },
-  "packageManager": "pnpm@6.29.1"
+  "packageManager": "pnpm@6.29.1",
+  "license": "(MIT OR GPL-3.0-OR-LATER OR AGPL-3.0-OR-LATER)"
 }
