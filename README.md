@@ -2,10 +2,6 @@
 
 BooruJS is a NodeJS Booru Library.
 
-## CLI Usage
-
-TBA
-
 ## Documentation
 
 TBA
@@ -76,9 +72,41 @@ new (require('boorujs'))('gelbooru', process.env.API_Key, process.env.API_User)
   );
 ```
 
+## CLI
+
+### Installation
+
+```bash
+# PNPM (pnpm.io | recommended)
+pnpm i -g boorujs
+# Yarn
+yarn global add boorujs
+# NPM
+npm i -g boorujs
+```
+
+### Usage
+
+```
+boorujs [args]
+
+Options:
+  -b, --booru                Booru to use ('list' for list)             [string]
+  -p, --pages                The amount of pages           [number] [default: 1]
+  -t, --dir, --target, --to  Where to download files to  [string] [default: cwd]
+  -q, --tags, --query        Tags to search for           [string] [default: ""]
+  -m, --multi                Download multiple at once                 [boolean]
+  -l, --log                  Log files being downloaded                [boolean]
+      --dry, --dry-run       Don't modify FS                           [boolean]
+      --json                 Write BooruJS API Output                  [boolean]
+      --src                  Get Github Repository link                [boolean]
+  -v, --version              Show version number                       [boolean]
+  -h, --help                 Show help                                 [boolean]
+```
+
 ## Credits
 
-Disclaimer: I worked on this with someone who prefers to stay anonymous.<br/>
-**I did not write the ATF, Moebooru and MyImouto adapters myself.**<br/>
-These were written by said anonymous person for this project.<br/>
-I am publishing these with their permission.
+The majority of the code was written by me.<br/>
+The ATF, Moebooru, and MyImouto Adapters, aswell as portions of the src/index.ts file, were written by a friend of mine (who prefers to stay anonymous), specifically for this project.<br/>
+For interacting with APIs, we use [Axios](https://axios-http.com). Without axios, BooruJS wouldn't be possible.<br/>
+For the CLI, we use [Yargs](https://yargs.js.org/), which made parsing shit way easier. Without yargs, I likely would not have made a CLI at all.
