@@ -2,6 +2,8 @@ import axios from 'axios';
 import BaseAPI from '../baseAPI';
 import { Post } from '../ReturnValues';
 interface APIPost {
+  // Directory (OLD API)
+  directory?: number;
   // ID
   id: number;
   // MD5
@@ -53,7 +55,7 @@ class ReturnedPost implements Post {
       })
     ).data;
   }
-  static fromAPIPost(post: APIPost) {
+  static fromAPIPost(post: APIPost, gelAPI?: GelbooruAPI) {
     const rtpost = new ReturnedPost();
     rtpost.id = post.id;
     rtpost.Score = post.score;
@@ -64,6 +66,8 @@ class ReturnedPost implements Post {
     rtpost.Tags = post.tags;
     rtpost.Raw = post;
     if (rtpost.URL === 'null') rtpost.URL = null;
+    if (!rtpost.URL && post.directory && post.image && gelAPI)
+      rtpost.URL = `${gelAPI.BaseURL}/images/${post.directory}/${post.image}`;
     return rtpost;
   }
 }
@@ -96,7 +100,7 @@ export default class GelbooruAPI extends BaseAPI {
     const RawPostData: APIPost[] = aaa.post ?? aaa; // 0.2.0 use an array directly, 0.2.5 (probs also a few versions before that) use a table including post instead
     if (!RawPostData || !RawPostData[0]) return []; // Cannot parse, return nothingness
     const Posts: ReturnedPost[] = [];
-    RawPostData.forEach(v => Posts.push(ReturnedPost.fromAPIPost(v)));
+    RawPostData.forEach(v => Posts.push(ReturnedPost.fromAPIPost(v, this)));
     return Posts;
   }
   async Posts(tags: string = '', pages: number = 2) {

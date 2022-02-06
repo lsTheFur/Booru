@@ -44,10 +44,21 @@ import { Post } from './APIs/ReturnValues';
       describe: 'Log files being downloaded',
       type: 'boolean',
     })
+    .option('dry', {
+      alias: ['dry-run'],
+      describe: `Don't modify FS`,
+      type: 'boolean',
+    })
+    .option('json', {
+      describe: `Write JSON files`,
+      type: 'boolean',
+    })
     .demandOption(['booru'], 'Please provide a booru to use.')
     .help().argv;
   // @ts-ignore
-  let { booru, dir, tags, multi, log }: Record<string, string> = await args;
+  let { booru, dir, tags }: Record<string, string> = await args;
+  // @ts-ignore
+  let { multi, log, dry, json }: Record<string, boolean> = await args;
   booru = booru.toLowerCase();
   // @ts-ignore
   const { pages }: number = await args;
@@ -76,26 +87,34 @@ import { Post } from './APIs/ReturnValues';
           dir ?? process.cwd(),
           post.id + '-' + post.fileName,
         );
+        if (json) {
+          return fs.writeFileSync(
+            filePath + '.json',
+            JSON.stringify(post, null, 2),
+          );
+        }
         if (!post.URL) return console.warn('Post ' + post.id + ' has no URL');
         try {
-          if (!fs.existsSync(filePath))
+          if (!fs.existsSync(filePath) && !dry)
             // for each post
             fs.writeFileSync(
               filePath,
               await post.Download(), // Returns a buffer containing the post
-            ); // download posts
+            );
+          else if (dry) await post.Download();
         } catch (error) {
-          fs.writeFileSync(
-            resolve(
-              dir ?? process.cwd(),
-              'error.' + post.id + '-' + post.fileName + '.log',
-            ),
-            `Error for ${post.URL}:
+          if (!dry)
+            fs.writeFileSync(
+              resolve(
+                dir ?? process.cwd(),
+                'error.' + post.id + '-' + post.fileName + '.log',
+              ),
+              `Error for ${post.URL}:
 POST:
 ${JSON.stringify(post, null, 2)}
 ERROR:
 ${JSON.stringify(error, null, 2)}`,
-          );
+            );
           console.error(
             'An error ocurred for ' +
               post.id +
