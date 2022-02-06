@@ -2,18 +2,18 @@
 
 (this describes which boorus you can use as strings directly - found in [src/index.ts](src/index.ts#L7-L23) on Lines 7-23)
 
-| Human Readable Name | Site                                   | String Passed |
-| ------------------- | -------------------------------------- | ------------- |
-| Gelbooru            | [gelbooru.com](https://gelbooru.com)   | `gelbooru`    |
-| Rule 34             | [rule34.xxx](https://rule34.xxx)       | `rule34`      |
-| Konachan            | [konachan.com](https://konachan.com)   | `konachan`    |
-| Safebooru           | [safebooru.org](https://safebooru.org) | `safebooru`   |
-| Lolibooru           | [lolibooru.moe](https://lolibooru.moe) | `lolibooru`   |
-| The Big Image Board |                                        | `tbib`        |
-| Yandere             |                                        | `yandere`     |
-| AllTheFallen        |                                        | `atf`         |
-| Realbooru           |                                        | `realbooru`   |
-| E621                |                                        | `e621`        |
+| Human Readable Name | Site                                                     | String Passed |
+| ------------------- | -------------------------------------------------------- | ------------- |
+| Gelbooru            | [gelbooru.com](https://gelbooru.com)                     | `gelbooru`    |
+| Rule 34             | [rule34.xxx](https://rule34.xxx)                         | `rule34`      |
+| Konachan            | [konachan.com](https://konachan.com)                     | `konachan`    |
+| Safebooru           | [safebooru.org](https://safebooru.org)                   | `safebooru`   |
+| Lolibooru           | [lolibooru.moe](https://lolibooru.moe)                   | `lolibooru`   |
+| The Big Image Board | [tbib.org](https://tbib.org)                             | `tbib`        |
+| Yandere             | [yande.re](https://yande.re)                             | `yandere`     |
+| AllTheFallen        | [booru.allthefallen.moe](https://booru.allthefallen.moe) | `atf`         |
+| Realbooru           | [realbooru.com](https://realbooru.com)                   | `realbooru`   |
+| E621                | [e621.net](https://e621.net)                             | `e621`        |
 
 ---
 
