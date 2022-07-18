@@ -64,20 +64,20 @@ export interface BooruInput {
   BooruURL: `https://${string}`;
 }
 export const MappedBooruNames = [];
-for (const booruName in Mappings) {
+for (const booruName in Mappings)
   MappedBooruNames.push(booruName);
-}
+
 /**
  * @name Adapters
  * @description List of adapters.
  * @info You **can** add your own adapters, and then use them in BooruInputs, however it's strongly suggested to make a PR instead, and contribute to BooruJS
  */
-export let Adapters: Record<BooruTypes, typeof BaseAdapter> = {
-  gelbooru: GelbooruAPI,
-  moebooru: MoebooruAPI,
-  myimouto: MyImoutoAPI,
-  atf: ATFAPI,
-  e621: E6API,
+export const Adapters: Record<BooruTypes, typeof BaseAdapter> = {
+  'gelbooru': GelbooruAPI,
+  'moebooru': MoebooruAPI,
+  'myimouto': MyImoutoAPI,
+  'atf': ATFAPI,
+  'e621': E6API,
 };
 /**
  * @name BooruConstructorInput
@@ -135,7 +135,7 @@ export class Booru {
    * @param {number?} pages Amount of pages to fetch
    * @returns {Promise<Post[]>} Posts
    */
-  Posts(tags: string, pages: number = 1): Promise<Post[]> {
+  Posts(tags: string, pages = 1): Promise<Post[]> {
     return this.Adapter.Posts(tags, pages);
   }
   /**
@@ -171,15 +171,15 @@ export class MultiBooru {
    * @param {number?} pagesPerBooru Amount of pages to fetch, per booru
    * @returns {Promise<Post[]>} Posts
    */
-  async Posts(tags: string, pagesPerBooru: number = 1): Promise<Post[]> {
+  async Posts(tags: string, pagesPerBooru = 1): Promise<Post[]> {
     const posts: Post[] = [];
-    for (const k in this.Boorus) {
+    for (const k in this.Boorus)
       if (Object.prototype.hasOwnProperty.call(this.Boorus, k)) {
         const Booru = this.Boorus[k];
         const v = await Booru.Posts(tags, pagesPerBooru);
         posts.push(...v);
       }
-    }
+
     return posts;
   }
 }

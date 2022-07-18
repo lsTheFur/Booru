@@ -1,5 +1,7 @@
 import * as fs from 'fs'; // Load fs
-import BooruJS, { MappedBooruNames, Post } from '.'; // Load BooruJS
+import BooruJS, {
+  MappedBooruNames, Post
+} from '.'; // Load BooruJS
 import BooruMappings from './Mappings';
 import * as yargs from 'yargs';
 import { resolve } from 'path';
@@ -9,62 +11,76 @@ export default async () => {
     .scriptName('boorujs')
     .usage('$0 [args]')
     .option('booru', {
-      alias: 'b',
-      describe: "Booru to use ('list' for list)",
+      'alias': 'b',
+      'describe': 'Booru to use (\'list\' for list)',
       // choices: MappedBooruNames,
-      type: 'string',
+      'type': 'string',
     })
     .option('pages', {
-      alias: 'p',
-      describe: 'The amount of pages',
-      default: 1,
-      type: 'number',
+      'alias': 'p',
+      'describe': 'The amount of pages',
+      'default': 1,
+      'type': 'number',
     })
     .option('dir', {
-      alias: ['target', 'to', 't'],
-      describe: 'Where to download files to',
-      default: process.cwd(),
-      defaultDescription: 'cwd',
-      type: 'string',
+      'alias': [
+        'target', 'to', 't'
+      ],
+      'describe': 'Where to download files to',
+      'default': process.cwd(),
+      'defaultDescription': 'cwd',
+      'type': 'string',
     })
     .option('tags', {
-      alias: ['query', 'q'],
-      describe: 'Tags to search for',
-      default: '',
-      type: 'string',
+      'alias': [
+        'query', 'q'
+      ],
+      'describe': 'Tags to search for',
+      'default': '',
+      'type': 'string',
     })
     .option('multi', {
-      alias: ['m'],
-      describe: 'Download multiple at once',
-      type: 'boolean',
+      'alias': ['m'],
+      'describe': 'Download multiple at once',
+      'type': 'boolean',
     })
     .option('log', {
-      alias: ['l'],
-      describe: 'Log files being downloaded',
-      type: 'boolean',
+      'alias': ['l'],
+      'describe': 'Log files being downloaded',
+      'type': 'boolean',
     })
     .option('dry', {
-      alias: ['dry-run'],
-      describe: `Don't modify FS`,
-      type: 'boolean',
+      'alias': ['dry-run'],
+      'describe': `Don't modify FS`,
+      'type': 'boolean',
     })
     .option('json', {
-      describe: `Write BooruJS API Output`,
-      type: 'boolean',
+      'describe': `Write BooruJS API Output`,
+      'type': 'boolean',
     })
     .option('src', {
-      describe: `Get Github Repository link`,
-      type: 'boolean',
+      'describe': `Get Github Repository link`,
+      'type': 'boolean',
+    })
+    .option('login', {
+      'describe': `API login; typically username:key`,
+      'type': 'string',
     })
     .alias('v', 'version')
     .alias('h', 'help')
     .help();
   const args = yrgs.argv;
   // @ts-ignore
-  let { booru, dir, tags }: Record<string, string> = await args;
+  let {
+    // eslint-disable-next-line prefer-const
+    booru, dir, tags, login
+  }: Record<string, string> = await args;
   // @ts-ignore
-  let { multi, log, dry, json, src }: Record<string, boolean> = await args;
-  if (src) return console.log('https://github.com/lsTheFur/Booru');
+  const {
+    multi, log, dry, json, src
+  }: Record<string, boolean> = await args;
+  if (src)
+    return console.log('https://github.com/lsTheFur/Booru');
   if (!booru) {
     console.error(`Missing Argument '--booru'
 Usage:`);
@@ -89,7 +105,7 @@ Usage:`);
           '- %s %s (ie boorujs %s)',
           name,
           ' '.repeat(15 - name.length),
-          '--booru ' + name,
+          `--booru ${  name}`,
         );
     });
     return;
@@ -111,18 +127,20 @@ Usage:`);
      */
     const download = (post: Post): Promise<void> =>
       new Promise(async res => {
-        if (log) console.log('Downloading ' + post.URL);
+        if (log)
+          console.log(`Downloading ${  post.URL}`);
         const filePath = resolve(
           dir ?? process.cwd(),
-          post.id + '-' + post.fileName,
+          `${post.id  }-${  post.fileName}`,
         );
-        if (json) {
+        if (json)
           return fs.writeFileSync(
-            filePath + '.json',
+            `${filePath  }.json`,
             JSON.stringify(post, null, 2),
           );
-        }
-        if (!post.URL) return console.warn('Post ' + post.id + ' has no URL');
+
+        if (!post.URL)
+          return console.warn(`Post ${  post.id  } has no URL`);
         try {
           if (!fs.existsSync(filePath) && !dry)
             // for each post
@@ -130,13 +148,14 @@ Usage:`);
               filePath,
               await post.Download(), // Returns a buffer containing the post
             );
-          else if (dry) await post.Download(); // Download but dont write
+          else if (dry)
+            await post.Download(); // Download but dont write
         } catch (error) {
           if (!dry)
             fs.writeFileSync(
               resolve(
                 dir ?? process.cwd(),
-                'error.' + post.id + '-' + post.fileName + '.log',
+                `error.${  post.id  }-${  post.fileName  }.log`,
               ),
               `Error for ${post.URL}:
 POST:
@@ -145,33 +164,35 @@ ERROR:
 ${JSON.stringify(error, null, 2)}`,
             );
           console.error(
-            'An error ocurred for ' +
-              post.id +
-              '-' +
-              post.fileName +
-              ' - See ' +
+            `An error ocurred for ${
+              post.id
+            }-${
+              post.fileName
+            } - See ${
               resolve(
                 dir ?? process.cwd(),
-                'error.' + post.id + '-' + post.fileName + '.log',
-              ),
+                `error.${  post.id  }-${  post.fileName  }.log`,
+              )}`,
           );
         }
         res(void 0);
       });
-    const Booru = new BooruJS(BooruMappings[booru]); // Create a Booru Instance (Using booru as an argument would work, ts is just a bitch)
+    const spl = login?.split(':');
+    const id = login ? spl.shift() : null;
+    const Booru = new BooruJS(BooruMappings[booru], login ? spl.join(':') : null, id); // Create a Booru Instance (Using booru as an argument would work, ts is just a bitch)
     Booru.Posts(tags ?? '', pages ?? 1).then(
       multi
         ? postList => postList.forEach(download)
         : async postList => {
-            for (const k in postList) {
-              if (Object.prototype.hasOwnProperty.call(postList, k)) {
-                const post = postList[k];
-                await download(post);
-              }
+          for (const k in postList)
+            if (Object.prototype.hasOwnProperty.call(postList, k)) {
+              const post = postList[k];
+              await download(post);
             }
-          },
+
+        },
     );
-  } else {
+  } else
     console.error('Booru `%s` not found', booru);
-  }
+
 };

@@ -49,53 +49,57 @@ export interface APIPost {
 }
 class ReturnedPost extends BaseRTPost implements Post {
   static fromAPIPost(post: APIPost) {
-    const rtpost = new ReturnedPost();
+    const rtpost = new ReturnedPost;
     rtpost.id = post.id;
     rtpost.Score = Number(post.score);
     rtpost.Rating = ratings[post.rating];
     rtpost.Source = post.source;
-    rtpost.fileName = post.source?.split('/').pop().split('?').shift() ?? '';
+    rtpost.fileName = post.source?.split('/').pop()
+      .split('?')
+      .shift() ?? '';
     rtpost.URL = encodeURI(post.file_url);
     rtpost.Tags = post.tag_string;
     rtpost.Raw = post;
-    if (rtpost.URL === 'null') rtpost.URL = null;
+    if (rtpost.URL === 'null')
+      rtpost.URL = null;
     return rtpost;
   }
 }
 export default class ATFAPI extends BaseAdapter {
   constructor(BaseURL: string, LOGIN?: string, PSWD_HASH?: string) {
     super(BaseURL, LOGIN, PSWD_HASH);
-    if (LOGIN && PSWD_HASH) {
+    if (LOGIN && PSWD_HASH)
       this.GlobalApiUrlArgs += `&login=${LOGIN}&password_hash=${SHA1(
         PSWD_HASH,
       )}`;
-    }
+
   }
-  GlobalApiUrlArgs: string = '';
+  GlobalApiUrlArgs = '';
   BaseURL: string;
   _getURL(args: string) {
     return this.BaseURL + args + this.GlobalApiUrlArgs;
   }
-  async _API_Posts(tags: string, page: number = 0) {
+  async _API_Posts(tags: string, page = 0) {
     return (
       await axios({
-        url: this._getURL('/posts.json?page=' + page + '&tags=' + tags),
-        responseType: 'json',
+        'url': this._getURL(`/posts.json?page=${  page  }&tags=${  tags}`),
+        'responseType': 'json',
       })
     ).data;
   }
-  async _Posts(tags: string, page: number = 0) {
+  async _Posts(tags: string, page = 0) {
     const RawPostData: APIPost[] = await this._API_Posts(tags, page);
     const Posts: ReturnedPost[] = [];
     RawPostData.forEach(v => Posts.push(ReturnedPost.fromAPIPost(v)));
     return Posts;
   }
-  async Posts(tags: string = '', pages: number = 2) {
+  async Posts(tags = '', pages = 2) {
     const Posts: ReturnedPost[] = [];
     let page = 0;
     while (page < pages) {
       const d = await this._Posts(tags, page);
-      if (d.length === 0) break;
+      if (d.length === 0)
+        break;
       d.forEach(v => Posts.push(v));
       page++;
     }
@@ -104,8 +108,8 @@ export default class ATFAPI extends BaseAdapter {
   async _API_Post(id: number) {
     return (
       await axios({
-        url: this._getURL('/posts/' + id + '.json'),
-        responseType: 'json',
+        'url': this._getURL(`/posts/${  id  }.json`),
+        'responseType': 'json',
       })
     ).data;
   }

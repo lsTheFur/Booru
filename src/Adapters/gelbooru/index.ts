@@ -29,7 +29,7 @@ export interface APIPost {
 }
 class ReturnedPost extends BaseRTPost implements Post {
   static fromAPIPost(post: APIPost, gelAPI?: GelbooruAPI) {
-    const rtpost = new ReturnedPost();
+    const rtpost = new ReturnedPost;
     rtpost.id = post.id;
     rtpost.Score = post.score;
     rtpost.Rating = post.rating;
@@ -38,7 +38,8 @@ class ReturnedPost extends BaseRTPost implements Post {
     rtpost.fileName = post.image;
     rtpost.Tags = post.tags;
     rtpost.Raw = post;
-    if (rtpost.URL === 'null') rtpost.URL = null;
+    if (rtpost.URL === 'null')
+      rtpost.URL = null;
     if (!rtpost.URL && post.directory && post.image && gelAPI)
       rtpost.URL = `${gelAPI.BaseURL}/images/${post.directory}/${post.image}`;
     return rtpost;
@@ -47,40 +48,43 @@ class ReturnedPost extends BaseRTPost implements Post {
 export default class GelbooruAPI extends BaseAdapter {
   constructor(BaseURL: string, API?: string, USER?: string) {
     super(BaseURL, API, USER);
-    if (API && USER) {
+    if (API && USER)
       this.GlobalApiUrlArgs += `&api_key=${API}&user_id=${USER}`;
-    }
   }
-  GlobalApiUrlArgs: string = '';
+  GlobalApiUrlArgs = '';
   BaseURL: string;
   _getURL(args: string) {
-    return this.BaseURL + '?json=1&' + args + this.GlobalApiUrlArgs;
+    return `${this.BaseURL}?json=1&${args}${this.GlobalApiUrlArgs}`;
   }
-  async _API_Posts(tags: string, page: number = 0) {
+  async _API_Posts(tags: string, page = 0) {
     const a = (
       await axios({
-        url: this._getURL(
-          'page=dapi&s=post&q=index&limit=100&pid=' + page + '&tags=' + tags,
+        'url': this._getURL(
+          `page=dapi&s=post&q=index&limit=100&pid=${  page  }&tags=${  tags}`,
         ),
-        responseType: 'json',
+        'responseType': 'json',
       })
     ).data;
     return a;
   }
-  async _Posts(tags: string, page: number = 0) {
+  async _Posts(tags: string, page = 0) {
     const aaa = await this._API_Posts(tags, page);
-    const RawPostData: APIPost[] = aaa.post ?? aaa; // 0.2.0 use an array directly, 0.2.5 (probs also a few versions before that) use a table including post instead
-    if (!RawPostData || !RawPostData[0]) return []; // Cannot parse, return nothingness
+    const RawPostData: APIPost[] | string = aaa.post ?? aaa; // 0.2.0 use an array directly, 0.2.5 (probs also a few versions before that) use a table including post instead
+    if (!RawPostData || !RawPostData[0])
+      return []; // Cannot parse, return nothingness
+    if (typeof RawPostData === 'string')
+      throw new Error(`Expected JSON, Recieved: ${RawPostData}`);
     const Posts: ReturnedPost[] = [];
     RawPostData.forEach(v => Posts.push(ReturnedPost.fromAPIPost(v, this)));
     return Posts;
   }
-  async Posts(tags: string = '', pages: number = 2) {
+  async Posts(tags = '', pages = 2) {
     const Posts: ReturnedPost[] = [];
     let page = 0;
     while (page < pages) {
       const d = await this._Posts(tags, page);
-      if (d.length === 0) break;
+      if (d.length === 0)
+        break;
       d.forEach(v => Posts.push(v));
       page++;
     }
@@ -89,8 +93,8 @@ export default class GelbooruAPI extends BaseAdapter {
   async _API_Post(id: number) {
     return (
       await axios({
-        url: this._getURL('page=dapi&s=post&q=index&limit=1&id=' + id),
-        responseType: 'json',
+        'url': this._getURL(`page=dapi&s=post&q=index&limit=1&id=${id}`),
+        'responseType': 'json',
       })
     ).data;
   }

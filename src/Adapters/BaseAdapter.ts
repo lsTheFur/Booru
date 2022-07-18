@@ -56,7 +56,7 @@ export class BaseRTPost implements Post {
    * @description The raw API Response
    */
   Raw = {};
-  ///// METHODS
+  // /// METHODS
   /**
    * @name Download
    * @description Downloads the file at Post.URL into memory. Resolves with the response.
@@ -68,8 +68,8 @@ export class BaseRTPost implements Post {
       throw new Error('No URL returned from API. Cannot Download.');
     return (
       await axios({
-        url: this.URL,
-        responseType: 'arraybuffer',
+        'url': this.URL,
+        'responseType': 'arraybuffer',
       })
     ).data;
   }
@@ -95,12 +95,12 @@ export default class BaseAdapterClass implements BaseAdapter {
   constructor(BaseURL: string, Key?: string, USER?: string) {
     this.BaseURL = BaseURL;
   }
-  async Posts(tags: string = '', pages: number = 2) {
+  async Posts(tags = '', pages = 2) {
     const Posts: Post[] = [];
     return Posts;
   }
   async Post(id: number) {
-    const post: Post = new BaseRTPost();
+    const post: Post = new BaseRTPost;
     return post;
   }
 }
